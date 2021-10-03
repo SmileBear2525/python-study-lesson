@@ -1,0 +1,32 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+</head>
+<body>
+    <div id="parent" style="height: 100%;">
+        <canvas id="mycanvas"></canvas>
+    </div>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/smoothie/1.34.0/smoothie.min.js"></script>
+    <script type="text/javascript">
+        // canvasの高さと幅を画面に合わせる
+        var parent = document.getElementById("parent")
+        var canvas = document.getElementById("mycanvas")
+        canvas.width = parent.clientWidth
+        canvas.height = parent.clientHeight
+
+        var smoothie = new SmoothieChart();
+        smoothie.streamTo(canvas);
+        var series = new TimeSeries();
+        smoothie.addTimeSeries(series);
+
+        eel.expose(push_data)
+        function push_data(values) {
+            for (var i = 0; i < values.length; i++) {
+                series.append(values[i]["time"], values[i]["value"]);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Eel</title>
+</head>
+<body>
+	<script type="text/javascript" src="/eel.js"></script>
+	<script type="text/javascript">
+	eel.python_function("test")
+	function run() {
+		alert("run start")
+		let val = python_function2()();
+		console.log(val + " from Python")
+	}
+	</script>
+	<a href="#" onclick="run()">run</a> 
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<title>課題３</title>
+		<!-- デスクトップアプリ作成課題 -->
+		<link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+		<script type="text/javascript" src="/eel.js"></script>
+		<script type="text/javascript">
+			function input_check() {
+				//alert("関数:input_check")
+				file = document.getElementById("file").value;
+				alert(file);
+				if(file == "") {
+					alert("保存するファイル名が入力されていません")
+				}
+
+				keyword = document.getElementById("search").value;
+				if(keyword == "") {
+					alert("入力されていません")
+				}
+				else {
+					alert(keyword);
+					/*検索結果をテキストエリアに出力*/
+					run();
+				}
+			}
+			async function run() {
+				let result = await eel.python_search(keyword,file)() + "\n";
+				alert(result);
+
+				document.getElementById("log_output").value += result;
+			}
+		</script>
+		<form id="form">
+		<div>
+		<label>保存するCSVファイル名を入力してください</label>
+		</div>
+		<div>
+		<input type="text" id="file">
+		</div>
+		<div>
+		<label>検索キーワードを入力してください</label>
+		<div>
+		<div>
+		<input type="text" id="search">
+		<input type="button" id="submit" value="検索" onclick="input_check()">
+		</div>
+		<div>
+		<label>検索結果</label>
+		</div>
+		<div>
+		<!--テキストエリアログ出力-->
+		<textarea id="log_output" placeholder="検索結果が出力されます"></textarea>
+		</div>
+
+		</form>
+	</body>
+</html>
