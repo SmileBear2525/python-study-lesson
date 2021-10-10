@@ -1,0 +1,57 @@
+body {
+	font-family: -apple-system,Segoe UI,Helvetica Neue,Hiragino Kaku Gothic ProN,"メイリオ",meiryo,sans-serif;
+	font-size: 12px;
+  color: #333;
+}
+div.title {
+	font-size: 20px;
+	padding-bottom:30px;
+}
+div.blank {
+	padding:10px;
+}
+div.msg_area {
+	width:60%;
+	background-color: lightblue;
+}
+div.item_area,.order_area,.calc_area {
+	width:60%;
+	background-color: lemonchiffon;
+	padding:10px;
+}
+label {
+	margin: 5px;
+}
+button {
+	background-color: #1755aa;
+  color: #FFFFFF;
+  border-radius: 2px;
+	border: none;
+	margin: 5px;
+	font-size: 12px;
+}
+button:hover {
+	background-color: #018fd0;
+}
+button:active {
+	-webkit-transform: translate(1px,1px);
+  transform: translate(1px,1px);
+}
+input[type=text] {
+	font: 12px sans-serif;
+	box-sizing: border-box;
+	width: 100px;
+	margin: 4px 0;
+	padding: 0.3em;
+	transition: 0.3s;
+	border: 1px solid #1b2538;
+	border-radius: 4px;
+	outline: none;
+
+}
+input[type=text][disabled=false] {
+	background-color: silver;
+}
+button[disabled=false]{
+	background-color:silver;
+}

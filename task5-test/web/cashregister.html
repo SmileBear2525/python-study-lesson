@@ -1,0 +1,222 @@
+<!DOCTYPE htmel>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="stylesheet.css">
+	<title>レジ --課題５</title>
+	<!-- レジ　デスクトップアプリ作成課題 -->
+</head>
+<body>
+	<div class="title">
+	<label>POSシステム</label>
+	</div>
+	<div class="msg_area">
+	<labal id="lbl_msg_alert"></label>
+	</div>
+	<div class="blank">
+	</div>
+	<div class="item_area">
+		<div>
+		<label>商品コード入力</label>
+		<input type="text" id="txt_check_order"><button id="check_ordercode">チェック</button>
+		</div>
+		<div>
+		<!--商品内容の表示-->
+		<label id="lbl_order_list_result"></label>
+		</div>
+	</div>
+	<div class="blank">
+	</div>
+	<div class="order_area">
+		<div>
+		<label>購入数</label>
+		<input type="text" id="txt_add_order" disabled=false><button id="btn_add_order">追加</button>
+		<button id="btn_clear_order">クリア</button>
+		</div>
+		<div>
+		<!--オーダー一覧の表示-->
+		<label id="lbl_add_list_result"></label>
+		</div>
+		<div>
+		<button id="btn_calc_order" disabled=false>計算</button>
+		</div>
+		<div>
+		<!--購入金額の表示-->
+		<label id="lbl_total_price"></label><label id="lbl_output_total_price"></label>
+		</div>
+	</div>
+	<div class="blank">
+	</div>
+	<div class="calc_area">
+		<div>
+		<label>支払い金額入力</label>
+		<input type="text" id="txt_pay_price">
+		</div>
+		<div>
+		<!--支払い金額の表示-->
+		<label id="lbl_deposit_price"></label><label id="lbl_output_deposit_price"></label>
+		</div>
+		<div>
+		<button id="btn_pay_price">精算</button>
+		</div>
+		<div>
+		<button id="btn_output_receipt" disabled=false>レシート出力</button>
+		<a download id="lnk_receipt_file"></a>
+		</div>
+		<div>
+		<label id="lbl_change_pcice"></label>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/eel.js"></script>
+	<script languag="javascript" type="text/javascript">
+		//ページが読み込まれたときに商品一覧をCSVより取得
+		function onLoad() {
+			//alert("商品一覧を読み込んでいます");
+			document.getElementById("lbl_msg_alert").innerText = "商品一覧読み込み中...";
+			eel.input_csv();
+		}
+		// 呼び出し関数との順番に気をつけること
+		window.addEventListener('load', onLoad);
+		
+		//CSV読み込みが完了したらメッセージ出力
+		eel.expose(msg_input_master_item)
+			function msg_input_master_item(status) {
+				if(status == true) {
+					document.getElementById("lbl_msg_alert").innerText = "商品一覧読み込み完了"
+				}
+		}
+
+		//商品コードのチェック
+		check_ordercode.addEventListener("click", () => {
+			//alert("商品コードから商品名を表示します");
+			check_order_item = document.getElementById("txt_check_order").value;
+			if(check_order_item == "") {
+				alert("商品コードが入力されていません")
+			}
+			else {
+				//alert("入力された商品コード：" + check_order_item)
+				eel.display_item(check_order_item);
+			}
+		})
+
+		//商品コードチェックの結果表示
+		eel.expose(msg_result_order_items)
+			function msg_result_order_items(result, msg_text) {
+				document.getElementById("lbl_order_list_result").innerText = msg_text;
+				if(result == true) {
+					document.getElementById("txt_add_order").removeAttribute("disabled");
+				}
+				else {
+					document.getElementById("txt_add_order").setAttribute("disabled", false);
+					document.getElementById("txt_add_order").value = "";
+				}
+		}
+
+		// 商品コードおよび購入個数の追加
+		btn_add_order.addEventListener("click", () => {
+			//alert("追加ボタンが押されました");
+			add_order_item = document.getElementById("txt_check_order").value;
+			add_order_cnt = document.getElementById("txt_add_order").value;
+			if(add_order_item == "") {
+				alert("商品コードが入力されていません");
+			}
+			else {
+				if(add_order_cnt == "") {
+					alert("購入数が入力されていません");
+				}
+				else {
+
+					if(!(add_order_cnt.match(/^\d*$/))) {
+						alert("購入数が正しく入力されていません")
+					}
+					else {
+						eel.add_order_list(add_order_item, add_order_cnt);
+						eel.calc_order_list();
+					}
+				}
+			}
+		})
+		//購入値段計算
+		btn_calc_order.addEventListener("click", () => {
+			eel.calc_order_list();
+		})
+		//購入値段出力
+		eel.expose(msg_total_price)
+			function msg_total_price(price) {
+				document.getElementById("lbl_total_price").innerText = "合計：";
+				document.getElementById("lbl_output_total_price").innerText = price;
+		}
+		//精算
+		btn_pay_price.addEventListener("click", () => {
+			//alert("支払い金額にきたよ")
+			txt_pay_price = document.getElementById("txt_pay_price").value;
+			if(txt_pay_price == "") {
+				alert("支払い金額が入力されていません");
+				return false;
+			}
+			else {
+				if(!(txt_pay_price.match(/^\d*$/))) {
+					alert("支払い金額が正しく入力されていません");
+				}
+			}
+			output_total_price = document.getElementById("lbl_output_total_price").innerText;
+			total_price = parseFloat(output_total_price);
+			pay_price = parseFloat(txt_pay_price);
+			//alert(total_price);
+			//alert(pay_price);
+			document.getElementById("lbl_deposit_price").innerText = "預かり金額";
+			document.getElementById("lbl_output_deposit_price").innerText = txt_pay_price;
+			if(pay_price - total_price == 0) {
+				document.getElementById("lbl_change_pcice").innerText = "支払い完了、ありがとうございました";
+				document.getElementById("lbl_change_pcice").style.color = "black";
+				document.getElementById("btn_output_receipt").removeAttribute("disabled");
+			}
+			else if(pay_price - total_price > 0){
+				document.getElementById("lbl_change_pcice").innerText = "おつり：" + (pay_price - total_price);
+				document.getElementById("lbl_change_pcice").style.color = "black";
+				document.getElementById("btn_output_receipt").removeAttribute("disabled");
+			}
+			else {
+				document.getElementById("lbl_change_pcice").innerText = "支払い金額が" + (total_price - pay_price) + "円、不足しています";
+				document.getElementById("lbl_change_pcice").style.color = "red";
+				document.getElementById("btn_output_receipt").setAttribute("disabled", false);
+			}
+		})
+		//購入値段出力
+		eel.expose(msg_total_price)
+			function msg_change_price(change) {
+				document.getElementById("lbl_change_pcice").innerText = "おつり：" + change;
+		}
+
+		// オーダーの全クリア
+		btn_clear_order.addEventListener("click", () => {
+			document.getElementById("lbl_add_list_result").innerText = "";
+			document.getElementById("lbl_output_total_price").innerText = "";
+			document.getElementById("lbl_total_price").innerText = "";
+			document.getElementById("txt_pay_price").value = "";
+			document.getElementById("lbl_change_pcice").innerText = "";
+			document.getElementById("btn_output_receipt").setAttribute("disabled", false);
+		})
+		//オーダー商品一覧の表示
+		eel.expose(msg_add_order_items)
+			function msg_add_order_items(text) {
+				document.getElementById("lbl_add_list_result").innerText += text;
+		}
+		//レシート出力（拡張機能）
+		btn_output_receipt.addEventListener("click", () => {
+			//alert("レシート出力ボタンが押されました")
+			total_price = document.getElementById("lbl_output_total_price").innerText;//購入金額
+			deposit_price = document.getElementById("lbl_output_deposit_price").innerText;//預かり金額
+			eel.output_receipt(total_price, deposit_price);
+		})
+		//オーダー商品一覧の表示
+		eel.expose(msg_receipt_file)
+			function msg_receipt_file(filesubpath, filename) {
+				document.getElementById("lnk_receipt_file").href = filesubpath + "/" + filename;
+				document.getElementById("lnk_receipt_file").download = filename;
+				document.getElementById("lnk_receipt_file").innerText = filename;
+		}
+	</script>
+</body>
+</html>
