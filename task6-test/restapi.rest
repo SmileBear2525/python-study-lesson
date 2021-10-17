@@ -1,0 +1,21 @@
+#REST APIを使ったリクエスト
+#課題１
+
+#GETを使ったやり方
+#GET https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?applicationId=1017111620275786286&keyword="鬼滅"
+
+#POSTを使ったやり方
+# POST https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706 HTTP/1.1
+# content-type: application/json
+
+# {
+# 	"applicationId":1017111620275786286,
+# 	"keyword":"鬼滅の刃",
+# 	"shopCode": "keitsu"
+# }
+
+#商品価格ナビ製品検索API
+#GETを使ったやり方
+#GET https://app.rakuten.co.jp/services/api/Product/Search/20170426?format=json&applicationId=1017111620275786286&keyword="Pythonプログラミング"
+
+GET https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20170628?format=json&applicationId=1017111620275786286&genreId=551167
