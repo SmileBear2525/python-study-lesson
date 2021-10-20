@@ -2,7 +2,16 @@ import requests
 
 #リクエスト関数
 def get_api(url):
+	# APIを実行
 	result = requests.get(url)
+	# 結果のjsonをdict化
+	return result.json()
+
+#リクエスト関数(パラメータ使用)
+def get_api_param(url, params: dict):
+	# APIを実行
+	result = requests.get(url, params=params)
+	# 結果のjsonをdict化
 	return result.json()
 
 #レスポンス結果より上位階層の情報をリスト化

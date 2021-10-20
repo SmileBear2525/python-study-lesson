@@ -80,3 +80,4 @@ def test_get_response_api_sub():
 	# #テストコード
 	# #例外で[]が返ってくる
 	assert test2_result == []
+
