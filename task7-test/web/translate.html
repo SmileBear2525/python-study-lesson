@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/stylesheet.css">
+	<title>マイ翻訳機 --課題７</title>
+</head>
+<body>
+	<div class="title">
+	<label>マイ翻訳機</label>
+	</div>
+	<div>
+	<div>
+	<label>言語</label>
+	<label>
+	<select id="before_lang">
+		<option value="en" selected>en</option>
+		<option value="ja">ja</option> 
+		<option value="en">de</option> 
+	</select>
+	</label>
+	</div>
+	<label>翻訳したいテキストを入力してください</label>
+	</div>
+	<div>
+	<textarea id="before_word"></textarea>
+	</div>
+	<div>
+	<button id="btn_translate">翻訳</button>
+	</div>
+	<div>
+	<div>
+	<label>翻訳後の言語</label>
+	<label>
+	<select id="after_lang">
+		<option value="en">en</option>
+		<option value="ja" selected>ja</option> 
+		<option value="en">de</option> 
+	</select>
+	</label>
+	</div>
+	<label>翻訳結果</label>
+	</div>
+	<div>
+	<textarea id="after_word"></textarea>
+	</div>
+
+	<script type="text/javascript" src="/eel.js"></script>
+	<script type="text/javascript">
+		btn_translate.addEventListener('click', () => {
+			//alert("翻訳を開始します");
+			before_word = document.getElementById("before_word").value;
+			before_lang = document.getElementById("before_lang").value;
+			after_lang = document.getElementById("after_lang").value;
+			//alert(before_lang);
+			alert(before_lang + "→" + after_lang);
+
+			if(before_word == "") {
+				alert("翻訳前テキストが入力されていません");
+				return false;
+			}
+			eel.translete_inputtext(before_word, before_lang, after_lang)
+		})
+
+		//翻訳結果出力
+		eel.expose(txt_result_word)
+			function txt_result_word(word) {
+				document.getElementById("after_word").innerText = word;
+		}
+
+	</script>
+</body>
+</html>
